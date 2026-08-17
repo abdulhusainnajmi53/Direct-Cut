@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DirectCut</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-layout">
+
+    <!-- Top Header Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="app-brand-icon" title="DirectCut">
+          <svg viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
+        </div>
+        <button class="header-icon-btn" id="btnShortcutsHelp" title="Keyboard Shortcuts (?)">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 .88-.36 1.68-.93 2.25z"/></svg>
+        </button>
+      </div>
+
+      <!-- Center File Title & Specs -->
+      <div class="header-center">
+        <div class="file-title" id="lblFilename">No Video Loaded</div>
+        <div class="file-meta" id="lblMetaSubtitle">Open a video file to begin lossless trimming</div>
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="header-right">
+        <button class="btn-primary-indigo" id="btnBrowse">
+          <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+          Open Video
+        </button>
+        <button class="btn-secondary-outline" id="btnCloseVideo" title="Close current video">Close Video</button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="main-workspace">
+
+      <!-- Left Column: Video Player, Transport & Timeline -->
+      <section class="left-stage">
+
+        <!-- Video Player Card -->
+        <div class="video-viewport-card">
+          <video id="videoPlayer" preload="metadata"></video>
+
+          <div class="empty-drop-zone" id="dropOverlay">
+            <div class="drop-icon-wrap">
+              <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+            </div>
+            <h3>Open a Video File to Start Trimming</h3>
+            <p>Drag & drop video here or click "Open Video"</p>
+          </div>
+        </div>
+
+        <!-- Media Controls Bar (Shifted Mark In/Out to Left so 5 Transport Buttons are Dead Center) -->
+        <div class="media-controls-bar">
+          
+          <!-- Left: Volume + Mark In + Mark Out -->
+          <div class="controls-left">
+            <button class="icon-tool-btn" id="btnMute" title="Mute / Unmute">
+              <svg id="volIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            </button>
+            <input type="range" class="vol-slider" id="volSlider" min="0" max="1" step="0.05" value="1">
+
+            <div class="divider-v"></div>
+
+            <button class="btn-marker btn-mark-in" id="btnMarkIn" title="Set Mark In Point (I)">
+              <span class="mark-key-badge">I</span> Mark In
+            </button>
+            <button class="btn-marker btn-mark-out" id="btnMarkOut" title="Set Mark Out Point (O)">
+              <span class="mark-key-badge">O</span> Mark Out
+            </button>
+          </div>
+
+          <!-- Center: ONLY 5 Transport Buttons (EXACT DEAD HORIZONTAL CENTER) -->
+          <div class="controls-center">
+            <button class="transport-btn" id="btnPrevKeyframe" title="Previous Keyframe / Jump -2s (Up Arrow)">
+              <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            <button class="transport-btn" id="btnStepPrevFrame" title="Step -1 Frame (Left Arrow)">
+              <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            
+            <button class="play-main-btn" id="btnPlayPause" title="Play / Pause (Space)">
+              <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            
+            <button class="transport-btn" id="btnStepNextFrame" title="Step +1 Frame (Right Arrow)">
+              <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+            <button class="transport-btn" id="btnNextKeyframe" title="Next Keyframe / Jump +2s (Down Arrow)">
+              <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+          </div>
+
+          <!-- Right: Speed & Timecode Readout -->
+          <div class="controls-right">
+            <select class="speed-dropdown" id="speedSelect" title="Playback Speed">
+              <option value="0.5">0.5x</option>
+              <option value="1.0" selected>1.0x</option>
+              <option value="1.5">1.5x</option>
+              <option value="2.0">2.0x</option>
+            </select>
+            <div class="timecode-readout">
+              <span id="lblCurrentTimecode">00:00:00:00</span> / <span id="lblDurationTimecode">00:00:00:00</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Nordic Timeline Section -->
+        <div class="timeline-container-card">
+          <!-- Time Ruler -->
+          <div class="timeline-ruler" id="timelineRuler">
+            <span>00:00:00</span>
+            <span>00:15:00</span>
+            <span>00:30:00</span>
+            <span>00:45:00</span>
+            <span>01:00:00</span>
+          </div>
+
+          <!-- Filmstrip Track Canvas with Slim Purple Accent Border -->
+          <div class="filmstrip-canvas-wrap">
+            <canvas id="timelineCanvas"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Column: Keep Clips Sidebar -->
+      <aside class="right-sidebar">
+
+        <div class="sidebar-top">
+          <h2>Keep Clips</h2>
+          <span class="clips-count-pill" id="clipCountBadge">0 Clips</span>
+        </div>
+
+        <!-- Clips List Cards -->
+        <div class="clips-scroll-container" id="segmentsList">
+          <div class="empty-clips-msg">
+            No clips added yet.<br>Mark In [I] and Out [O], then press "+ Add Clip".
+          </div>
+        </div>
+
+        <button class="btn-add-clip-indigo" id="btnAddSegment">+ Add Clip (Enter)</button>
+
+        <!-- Bottom Export Area -->
+        <div class="sidebar-export-section">
+          <label class="merge-checkbox-row">
+            <input type="checkbox" id="chkMerge" checked>
+            <span>Merge all clips into single video</span>
+          </label>
+
+          <button class="btn-export-teal" id="btnStartExport" disabled>
+            Export Video
+          </button>
+
+          <!-- Export Progress Bar -->
+          <div class="export-progress-wrap" id="progressContainer">
+            <div class="progress-track">
+              <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text-label" id="progressText">Processing... 0%</div>
+          </div>
+
+          <!-- Expandable Activity Log with Resize Slider Handle -->
+          <div class="log-panel-container">
+            <div class="log-resize-bar" id="logResizeBar" title="Drag up/down to resize log viewer">
+              <span class="resize-grip-line"></span>
+              <span class="log-title-label">Activity Log</span>
+            </div>
+            <div class="status-console-box" id="statusLog">Ready. Stream Copy mode active.</div>
+          </div>
+        </div>
+
+      </aside>
+
+    </main>
+
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div class="modal-backdrop" id="shortcutsModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Keyboard Shortcuts</h3>
+        <button class="btn-close-x" id="btnCloseModal">✕</button>
+      </div>
+      <div class="shortcut-list">
+        <div class="sc-row"><span>Play / Pause</span> <kbd>Space</kbd></div>
+        <div class="sc-row"><span>Step -1 Frame / +1 Frame</span> <kbd>Left</kbd> / <kbd>Right</kbd></div>
+        <div class="sc-row"><span>Step -1 Second / +1 Second</span> <kbd>Shift + Left</kbd> / <kbd>Shift + Right</kbd></div>
+        <div class="sc-row"><span>Jump Keyframes</span> <kbd>Up</kbd> / <kbd>Down</kbd></div>
+        <div class="sc-row"><span>Set Mark In Point</span> <kbd>I</kbd></div>
+        <div class="sc-row"><span>Set Mark Out Point</span> <kbd>O</kbd></div>
+        <div class="sc-row"><span>Add Marked Clip</span> <kbd>Enter</kbd></div>
+        <div class="sc-row"><span>Toggle Shortcuts Overlay</span> <kbd>?</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/player.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
